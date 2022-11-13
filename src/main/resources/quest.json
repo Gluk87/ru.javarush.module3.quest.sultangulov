@@ -1,0 +1,85 @@
+{
+  "questions": [
+    {
+      "id": 0,
+      "text": "Ты потерял память. Принять вызов НЛО?",
+      "lastQuestion": false,
+      "answers": [
+        {
+          "id": 1,
+          "text": "Принять вызов",
+          "nextQuestionId": 1,
+          "wrongAnswer": false
+        },
+        {
+          "id": 2,
+          "text": "Отклонить вызов",
+          "nextQuestionId": -1,
+          "wrongAnswer": true
+        }
+      ]
+    },
+    {
+      "id": 1,
+      "text": "Ты принял вызов. Поднимаешься на мостик к капитану?",
+      "lastQuestion": false,
+      "answers": [
+        {
+          "id": 1,
+          "text": "Подняться на мостик",
+          "nextQuestionId": 2,
+          "wrongAnswer": false
+        },
+        {
+          "id": 2,
+          "text": "Отказаться подниматься на мостик",
+          "nextQuestionId": -2,
+          "wrongAnswer": true
+        }
+      ]
+    },
+    {
+      "id": 2,
+      "text": "Ты поднялся на мостик. Ты кто?",
+      "lastQuestion": true,
+      "answers": [
+        {
+          "id": 1,
+          "text": "Рассказать правду о себе",
+          "nextQuestionId": 3,
+          "wrongAnswer": false
+        },
+        {
+          "id": 2,
+          "text": "Солгать о себе",
+          "nextQuestionId": -3,
+          "wrongAnswer": true
+        }
+      ]
+    },
+    {
+      "id": 3,
+      "text": "Тебя вернули домой. Победа!",
+      "lastQuestion": null,
+      "answers": []
+    },
+    {
+      "id": -1,
+      "text": "Ты отклонил вызов. Поражение!",
+      "lastQuestion": null,
+      "answers": []
+    },
+    {
+      "id": -2,
+      "text": "Ты не пошел на переговоры. Поражение!",
+      "lastQuestion": null,
+      "answers": []
+    },
+    {
+      "id": -3,
+      "text": "Твою ложь разоблачили. Поражение!",
+      "lastQuestion": null,
+      "answers": []
+    }
+  ]
+}
