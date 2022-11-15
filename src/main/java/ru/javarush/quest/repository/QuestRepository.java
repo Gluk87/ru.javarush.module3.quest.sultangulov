@@ -33,14 +33,6 @@ public class QuestRepository {
                 .isLastQuestion();
     }
 
-    public String isWrongAnswer (int id) {
-        return quest.getQuestions().stream()
-                .filter(p -> p.getId() == id)
-                .findFirst()
-                .get()
-                .getText();
-    }
-
     public List<Answer> getAnswersByQuestionId(int id) {
         return quest.getQuestions().get(id).getAnswers();
     }
