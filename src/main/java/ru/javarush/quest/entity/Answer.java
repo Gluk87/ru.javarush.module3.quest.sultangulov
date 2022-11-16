@@ -10,5 +10,4 @@ public class Answer {
     private int id;
     private String text;
     private Integer nextQuestionId;
-    private boolean isWrongAnswer;
 }

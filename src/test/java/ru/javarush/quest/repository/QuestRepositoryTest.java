@@ -44,8 +44,8 @@ public class QuestRepositoryTest {
     @Test
     void checkGetAnswersByQuestionId() {
         List<Answer> answers = new ArrayList<>();
-        answers.add(new Answer(1, "Подняться на мостик", 2, false));
-        answers.add(new Answer(2, "Отказаться подниматься на мостик", -2, false));
+        answers.add(new Answer(1, "Подняться на мостик", 2));
+        answers.add(new Answer(2, "Отказаться подниматься на мостик", -2));
         assertEquals(answers.get(0).getText(), questRepository.getAnswersByQuestionId(1).get(0).getText());
         assertEquals(answers.get(1).getText(), questRepository.getAnswersByQuestionId(1).get(1).getText());
     }

@@ -1,4 +1,4 @@
-package ru.javarush.quest;
+package ru.javarush.quest.servlet;
 
 import lombok.extern.slf4j.Slf4j;
 import ru.javarush.quest.entity.Answer;

@@ -8,14 +8,12 @@
         {
           "id": 1,
           "text": "Принять вызов",
-          "nextQuestionId": 1,
-          "wrongAnswer": false
+          "nextQuestionId": 1
         },
         {
           "id": 2,
           "text": "Отклонить вызов",
-          "nextQuestionId": -1,
-          "wrongAnswer": true
+          "nextQuestionId": -1
         }
       ]
     },
@@ -27,14 +25,12 @@
         {
           "id": 1,
           "text": "Подняться на мостик",
-          "nextQuestionId": 2,
-          "wrongAnswer": false
+          "nextQuestionId": 2
         },
         {
           "id": 2,
           "text": "Отказаться подниматься на мостик",
-          "nextQuestionId": -2,
-          "wrongAnswer": true
+          "nextQuestionId": -2
         }
       ]
     },
@@ -46,14 +42,12 @@
         {
           "id": 1,
           "text": "Рассказать правду о себе",
-          "nextQuestionId": 3,
-          "wrongAnswer": false
+          "nextQuestionId": 3
         },
         {
           "id": 2,
           "text": "Солгать о себе",
-          "nextQuestionId": -3,
-          "wrongAnswer": true
+          "nextQuestionId": -3
         }
       ]
     },
