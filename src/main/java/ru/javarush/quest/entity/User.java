@@ -1,15 +1,10 @@
 package ru.javarush.quest.entity;
 
 import lombok.Getter;
-import lombok.Setter;
 
 @Getter
-@Setter
 public class User {
-
-    private Long id;
-    private String name;
-    private String ipAddress;
+    private final String name;
     private int countGames;
     private int countWin;
 

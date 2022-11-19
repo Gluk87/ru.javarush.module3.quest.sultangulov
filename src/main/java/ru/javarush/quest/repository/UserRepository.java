@@ -6,17 +6,17 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class UserRepository {
-    private final Map<String, User> userRepository = new HashMap<>();
+    private final Map<String, User> repository = new HashMap<>();
 
     public void save(String name, User user) {
-        userRepository.put(name, user);
+        repository.put(name, user);
     }
 
     public User getUserByName(String name) {
-        return userRepository.get(name);
+        return repository.get(name);
     }
 
     public boolean isExists(String name) {
-        return userRepository.containsKey(name);
+        return repository.containsKey(name);
     }
 }

@@ -11,7 +11,7 @@ import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-public class QuestRepositoryTest {
+class QuestRepositoryTest {
 
     QuestRepository questRepository = new QuestRepository();
 

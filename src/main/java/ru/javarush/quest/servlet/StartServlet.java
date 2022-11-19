@@ -1,6 +1,8 @@
 package ru.javarush.quest.servlet;
 
 import lombok.extern.slf4j.Slf4j;
+import ru.javarush.quest.exception.QuestServletException;
+import ru.javarush.quest.exception.QuestUnknownException;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -11,20 +13,28 @@ import javax.servlet.http.HttpSession;
 import java.io.*;
 import java.net.InetAddress;
 
+@Slf4j
 @WebServlet(name = "startServlet", value = "/start")
 public class StartServlet extends HttpServlet {
 
     @Override
-    public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
-        HttpSession session = request.getSession(true);
+    public void doPost(HttpServletRequest request, HttpServletResponse response) {
+        try {
+            HttpSession session = request.getSession(true);
 
-        String userName = request.getParameter("userName");
-        request.setAttribute("userName", userName);
-        session.setAttribute("IP", InetAddress.getLocalHost().getHostAddress());
+            String userName = request.getParameter("userName");
+            request.setAttribute("userName", userName);
+            session.setAttribute("IP", InetAddress.getLocalHost().getHostAddress());
 
-        getServletContext()
-                .getRequestDispatcher("/quest")
-                .forward(request, response);
-
+            getServletContext()
+                    .getRequestDispatcher("/quest")
+                    .forward(request, response);
+        } catch (ServletException e) {
+            log.error(e.getMessage());
+            throw new QuestServletException(e.getMessage());
+        } catch (IOException e) {
+            log.error(e.getMessage());
+            throw new QuestUnknownException(e.getMessage());
+        }
     }
 }

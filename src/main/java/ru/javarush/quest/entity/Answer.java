@@ -3,7 +3,6 @@ package ru.javarush.quest.entity;
 import lombok.*;
 
 @Getter
-@Setter
 @NoArgsConstructor
 @AllArgsConstructor
 public class Answer {

@@ -5,7 +5,7 @@ import ru.javarush.quest.entity.User;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-public class UserRepositoryTest {
+class UserRepositoryTest {
     UserRepository userRepository = new UserRepository();
 
     @Test
