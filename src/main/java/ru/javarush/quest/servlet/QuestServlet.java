@@ -8,6 +8,7 @@ import ru.javarush.quest.exception.QuestServletException;
 import ru.javarush.quest.exception.QuestUnknownException;
 import ru.javarush.quest.repository.QuestRepository;
 import ru.javarush.quest.repository.UserRepository;
+import ru.javarush.quest.service.QuestService;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -23,15 +24,15 @@ import java.util.List;
 public class QuestServlet extends HttpServlet {
     private QuestRepository questRepository;
     private UserRepository userRepository;
+    private QuestService questService;
 
     @Override
     public void init() {
         try {
-            questRepository = new QuestRepository();
-            if (userRepository == null) {
-                userRepository = new UserRepository();
-                log.info("Creating userRepository");
-            }
+            questService = new QuestService();
+            questRepository = new QuestRepository(questService.getQuestFromFile("quest.json"));
+            userRepository = new UserRepository();
+            log.info("Creating questRepository and userRepository");
         } catch (IOException e) {
             log.error(e.getMessage());
             throw new QuestUnknownException(e.getMessage());

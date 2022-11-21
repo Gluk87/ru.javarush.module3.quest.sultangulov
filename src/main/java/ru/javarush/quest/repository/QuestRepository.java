@@ -11,10 +11,10 @@ import java.util.List;
 
 @Getter
 public class QuestRepository {
-    private Quest quest;
+    private final Quest quest;
 
-    public QuestRepository() throws IOException {
-        loadJsonFile();
+    public QuestRepository(Quest quest) {
+        this.quest = quest;
     }
 
     public String getQuestionTextById(int id) {
@@ -35,9 +35,5 @@ public class QuestRepository {
 
     public List<Answer> getAnswersByQuestionId(int id) {
         return quest.getQuestions().get(id).getAnswers();
-    }
-    private void loadJsonFile() throws IOException {
-        File file = new File(getClass().getClassLoader().getResource("quest.json").getFile());
-        quest = new JsonMapper().readValue(file, Quest.class);
     }
 }

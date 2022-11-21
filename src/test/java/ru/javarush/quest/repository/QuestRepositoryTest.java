@@ -4,6 +4,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
 import ru.javarush.quest.entity.Answer;
+import ru.javarush.quest.service.QuestService;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -13,7 +14,8 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class QuestRepositoryTest {
 
-    QuestRepository questRepository = new QuestRepository();
+    QuestService questService = new QuestService();
+    QuestRepository questRepository = new QuestRepository(questService.getQuestFromFile("quest.json"));
 
     public QuestRepositoryTest() throws IOException {
     }
