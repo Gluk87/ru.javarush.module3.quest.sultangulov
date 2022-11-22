@@ -4,10 +4,6 @@ import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import ru.javarush.quest.entity.Answer;
 import ru.javarush.quest.entity.User;
-import ru.javarush.quest.exception.QuestServletException;
-import ru.javarush.quest.exception.QuestUnknownException;
-import ru.javarush.quest.repository.QuestRepository;
-import ru.javarush.quest.repository.UserRepository;
 import ru.javarush.quest.service.QuestService;
 
 import javax.servlet.ServletException;
@@ -22,20 +18,18 @@ import java.util.List;
 @Slf4j
 @Getter
 public class QuestServlet extends HttpServlet {
-    private QuestRepository questRepository;
-    private UserRepository userRepository;
     private QuestService questService;
+    private static final String QUEST_NAME = "space";
 
     @Override
     public void init() {
         try {
             questService = new QuestService();
-            questRepository = new QuestRepository(questService.getQuestFromFile("quest.json"));
-            userRepository = new UserRepository();
+            questService.addQuest(QUEST_NAME, "quest.json");
             log.info("Creating questRepository and userRepository");
         } catch (IOException e) {
             log.error(e.getMessage());
-            throw new QuestUnknownException(e.getMessage());
+            e.printStackTrace();
         }
     }
 
@@ -45,27 +39,27 @@ public class QuestServlet extends HttpServlet {
         String userName = request.getParameter("userName");
         User user;
 
-        if (!userRepository.isExists(userName)) {
+        if (!questService.isUserExists(userName)) {
             user = new User(userName);
-            userRepository.save(userName, user);
+            questService.saveUser(userName, user);
             log.info("Creating new User " + userName);
         } else {
-            user = userRepository.getUserByName(userName);
+            user = questService.getUserByName(userName);
             log.info("User " + userName + " is exists");
         }
 
         int nextQuestionId = Integer.parseInt(request.getParameter("nextQuestionId"));
         boolean isLastQuestion = Boolean.parseBoolean(request.getParameter("isLastQuestion"));
         boolean isWrongAnswer = checkNegativeNumber(nextQuestionId);
-        String question = questRepository.getQuestionTextById(nextQuestionId);
+        String question = questService.getQuestionTextById(QUEST_NAME, nextQuestionId);
 
         log.info(user.toString() + ", nextQuestionId = " + nextQuestionId + ", isLastQuestion = " + isLastQuestion +
                 ", isWrongAnswer = " + isWrongAnswer + ", question = " + question);
 
         try {
             if (!isLastQuestion && !isWrongAnswer){
-                List<Answer> answersByQuestion = questRepository.getAnswersByQuestionId(nextQuestionId);
-                isLastQuestion = questRepository.isLastQuestionById(nextQuestionId);
+                List<Answer> answersByQuestion = questService.getAnswersByQuestionId(QUEST_NAME, nextQuestionId);
+                isLastQuestion = questService.isLastQuestionById(QUEST_NAME, nextQuestionId);
                 request.setAttribute("question", question);
                 request.setAttribute("answers", answersByQuestion);
                 request.setAttribute("nextQuestionId", nextQuestionId);
@@ -77,21 +71,18 @@ public class QuestServlet extends HttpServlet {
             } else if (isLastQuestion && !isWrongAnswer) {
                 user.incrCountGames();
                 user.incrWin();
-                request.setAttribute("text",question);
+                request.setAttribute("text", question);
                 log.info(user.getName() + " win! " + " CountGames = " + user.getCountGames() + ". CountWin = " + user.getCountWin());
                 request.getRequestDispatcher("final.jsp").forward(request, response);
             } else {
                 user.incrCountGames();
-                request.setAttribute("text",question);
+                request.setAttribute("text", question);
                 log.info(user.getName() + " lost! " + " CountGames = " + user.getCountGames() + ". CountWin = " + user.getCountWin());
                 request.getRequestDispatcher("final.jsp").forward(request, response);
             }
-        } catch (ServletException e) {
+        } catch (ServletException | IOException e) {
             log.error(e.getMessage());
-            throw new QuestServletException(e.getMessage());
-        } catch (IOException e) {
-            log.error(e.getMessage());
-            throw new QuestUnknownException(e.getMessage());
+            e.printStackTrace();
         }
     }
 

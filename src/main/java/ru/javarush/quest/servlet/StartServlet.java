@@ -1,8 +1,6 @@
 package ru.javarush.quest.servlet;
 
 import lombok.extern.slf4j.Slf4j;
-import ru.javarush.quest.exception.QuestServletException;
-import ru.javarush.quest.exception.QuestUnknownException;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -29,12 +27,9 @@ public class StartServlet extends HttpServlet {
             getServletContext()
                     .getRequestDispatcher("/quest")
                     .forward(request, response);
-        } catch (ServletException e) {
+        } catch (ServletException | IOException e) {
             log.error(e.getMessage());
-            throw new QuestServletException(e.getMessage());
-        } catch (IOException e) {
-            log.error(e.getMessage());
-            throw new QuestUnknownException(e.getMessage());
+            e.printStackTrace();
         }
     }
 }
