@@ -5,6 +5,7 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
 import ru.javarush.quest.entity.Answer;
 import ru.javarush.quest.entity.User;
+import ru.javarush.quest.exception.QuestionNotFoundException;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -42,6 +43,16 @@ class QuestServiceTest {
     @Test
     void checkPositiveIsLastQuestionById() {
         assertTrue(questService.isLastQuestionById(QUEST_NAME, 2));
+    }
+
+    @Test
+    void checkExceptionQuestionTextById() {
+        assertThrows(QuestionNotFoundException.class, ()->{questService.getQuestionTextById(QUEST_NAME, 10);});
+    }
+
+    @Test
+    void checkExceptionLastQuestionById() {
+        assertThrows(QuestionNotFoundException.class, ()->{questService.isLastQuestionById(QUEST_NAME, 10);});
     }
 
     @Test

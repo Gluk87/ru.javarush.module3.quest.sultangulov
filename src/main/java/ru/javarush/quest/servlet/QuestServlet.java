@@ -4,6 +4,7 @@ import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import ru.javarush.quest.entity.Answer;
 import ru.javarush.quest.entity.User;
+import ru.javarush.quest.exception.QuestionNotFoundException;
 import ru.javarush.quest.service.QuestService;
 
 import javax.servlet.ServletException;
@@ -48,15 +49,15 @@ public class QuestServlet extends HttpServlet {
             log.info("User " + userName + " is exists");
         }
 
-        int nextQuestionId = Integer.parseInt(request.getParameter("nextQuestionId"));
-        boolean isLastQuestion = Boolean.parseBoolean(request.getParameter("isLastQuestion"));
-        boolean isWrongAnswer = checkNegativeNumber(nextQuestionId);
-        String question = questService.getQuestionTextById(QUEST_NAME, nextQuestionId);
-
-        log.info(user.toString() + ", nextQuestionId = " + nextQuestionId + ", isLastQuestion = " + isLastQuestion +
-                ", isWrongAnswer = " + isWrongAnswer + ", question = " + question);
-
         try {
+            int nextQuestionId = Integer.parseInt(request.getParameter("nextQuestionId"));
+            boolean isLastQuestion = Boolean.parseBoolean(request.getParameter("isLastQuestion"));
+            boolean isWrongAnswer = checkNegativeNumber(nextQuestionId);
+            String question = questService.getQuestionTextById(QUEST_NAME, nextQuestionId);
+
+            log.info(user.toString() + ", nextQuestionId = " + nextQuestionId + ", isLastQuestion = " + isLastQuestion +
+                    ", isWrongAnswer = " + isWrongAnswer + ", question = " + question);
+
             if (!isLastQuestion && !isWrongAnswer){
                 List<Answer> answersByQuestion = questService.getAnswersByQuestionId(QUEST_NAME, nextQuestionId);
                 isLastQuestion = questService.isLastQuestionById(QUEST_NAME, nextQuestionId);
@@ -80,7 +81,7 @@ public class QuestServlet extends HttpServlet {
                 log.info(user.getName() + " lost! " + " CountGames = " + user.getCountGames() + ". CountWin = " + user.getCountWin());
                 request.getRequestDispatcher("final.jsp").forward(request, response);
             }
-        } catch (ServletException | IOException e) {
+        } catch (ServletException | QuestionNotFoundException | IOException e) {
             log.error(e.getMessage());
             e.printStackTrace();
         }
