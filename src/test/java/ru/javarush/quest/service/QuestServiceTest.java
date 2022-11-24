@@ -14,19 +14,18 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.*;
 
 class QuestServiceTest {
-
     QuestService questService = new QuestService();
-    private static final String QUEST_NAME = "space";
+    private String questName;
 
     public QuestServiceTest() throws IOException {
-        questService.addQuest(QUEST_NAME, "quest.json");
+        questName = questService.addQuestAndReturnName("quest.json");
     }
 
     @ParameterizedTest
     @ValueSource(ints = {0, 1, 2})
     void checkGetQuestionTextById(int id) {
         String expectedText = "";
-        String text = questService.getQuestionTextById(QUEST_NAME, id);
+        String text = questService.getQuestionTextById(questName, id);
         switch (id) {
             case 0: expectedText = "Ты потерял память. Принять вызов НЛО?"; break;
             case 1: expectedText = "Ты принял вызов. Поднимаешься на мостик к капитану?"; break;
@@ -37,22 +36,22 @@ class QuestServiceTest {
 
     @Test
     void checkNegativeIsLastQuestionById() {
-        assertFalse(questService.isLastQuestionById(QUEST_NAME, 1));
+        assertFalse(questService.isLastQuestionById(questName, 1));
     }
 
     @Test
     void checkPositiveIsLastQuestionById() {
-        assertTrue(questService.isLastQuestionById(QUEST_NAME, 2));
+        assertTrue(questService.isLastQuestionById(questName, 2));
     }
 
     @Test
     void checkExceptionQuestionTextById() {
-        assertThrows(QuestionNotFoundException.class, ()->{questService.getQuestionTextById(QUEST_NAME, 10);});
+        assertThrows(QuestionNotFoundException.class, ()->{questService.getQuestionTextById(questName, 10);});
     }
 
     @Test
     void checkExceptionLastQuestionById() {
-        assertThrows(QuestionNotFoundException.class, ()->{questService.isLastQuestionById(QUEST_NAME, 10);});
+        assertThrows(QuestionNotFoundException.class, ()->{questService.isLastQuestionById(questName, 10);});
     }
 
     @Test
@@ -60,8 +59,8 @@ class QuestServiceTest {
         List<Answer> answers = new ArrayList<>();
         answers.add(new Answer(1, "Подняться на мостик", 2));
         answers.add(new Answer(2, "Отказаться подниматься на мостик", -2));
-        assertEquals(answers.get(0).getText(), questService.getAnswersByQuestionId(QUEST_NAME,1).get(0).getText());
-        assertEquals(answers.get(1).getText(), questService.getAnswersByQuestionId(QUEST_NAME,1).get(1).getText());
+        assertEquals(answers.get(0).getText(), questService.getAnswersByQuestionId(questName,1).get(0).getText());
+        assertEquals(answers.get(1).getText(), questService.getAnswersByQuestionId(questName,1).get(1).getText());
     }
 
     @Test

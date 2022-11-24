@@ -18,7 +18,6 @@ import java.util.Optional;
 
 @Slf4j
 public class QuestService {
-
     private final QuestRepository questRepository;
     private final UserRepository userRepository;
 
@@ -27,8 +26,11 @@ public class QuestService {
         this.userRepository = new UserRepository();
     }
 
-    public void addQuest(String questName, String fileName) throws IOException {
+    public String addQuestAndReturnName(String fileName) throws IOException {
+        Quest quest = getQuestFromFile(fileName);
+        String questName = quest.getQuestName();
         questRepository.getQuests().put(questName, getQuestFromFile(fileName));
+        return questName;
     }
 
     public String getQuestionTextById(String questName, int id) {

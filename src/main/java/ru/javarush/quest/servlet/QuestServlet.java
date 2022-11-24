@@ -20,13 +20,13 @@ import java.util.List;
 @Getter
 public class QuestServlet extends HttpServlet {
     private QuestService questService;
-    private static final String QUEST_NAME = "space";
+    private String questName;
 
     @Override
     public void init() {
         try {
             questService = new QuestService();
-            questService.addQuest(QUEST_NAME, "quest.json");
+            questName = questService.addQuestAndReturnName("quest.json");
             log.info("Creating questRepository and userRepository");
         } catch (IOException e) {
             log.error(e.getMessage());
@@ -36,7 +36,6 @@ public class QuestServlet extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) {
-
         String userName = request.getParameter("userName");
         User user;
 
@@ -53,14 +52,14 @@ public class QuestServlet extends HttpServlet {
             int nextQuestionId = Integer.parseInt(request.getParameter("nextQuestionId"));
             boolean isLastQuestion = Boolean.parseBoolean(request.getParameter("isLastQuestion"));
             boolean isWrongAnswer = checkNegativeNumber(nextQuestionId);
-            String question = questService.getQuestionTextById(QUEST_NAME, nextQuestionId);
+            String question = questService.getQuestionTextById(questName, nextQuestionId);
 
             log.info(user.toString() + ", nextQuestionId = " + nextQuestionId + ", isLastQuestion = " + isLastQuestion +
                     ", isWrongAnswer = " + isWrongAnswer + ", question = " + question);
 
             if (!isLastQuestion && !isWrongAnswer){
-                List<Answer> answersByQuestion = questService.getAnswersByQuestionId(QUEST_NAME, nextQuestionId);
-                isLastQuestion = questService.isLastQuestionById(QUEST_NAME, nextQuestionId);
+                List<Answer> answersByQuestion = questService.getAnswersByQuestionId(questName, nextQuestionId);
+                isLastQuestion = questService.isLastQuestionById(questName, nextQuestionId);
                 request.setAttribute("question", question);
                 request.setAttribute("answers", answersByQuestion);
                 request.setAttribute("nextQuestionId", nextQuestionId);
